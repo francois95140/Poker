@@ -1,5 +1,4 @@
 package org.example;
 
-public class Hand {
-
+public enum Color {
 }
