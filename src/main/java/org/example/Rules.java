@@ -1,6 +1,6 @@
 package org.example;
 
-import java.util.List;
+import java.util.*;
 
 public class Rules {
     public String CompareCrads(List<Card> cards){
@@ -27,7 +27,10 @@ public class Rules {
     }
     public boolean isStraightFlush(List<Card> cards){
 
-        return false;
+            if ( cards.size() != 5 ) return(false);
+            if (isStraight(cards) && isFlush(cards)) return true;
+            else return false;
+
     }
     public boolean isFourOfAKind(List<Card> cards){
 
@@ -39,22 +42,60 @@ public class Rules {
     }
     public boolean isFlush(List<Card> cards){
 
-        return false;
+             Card[] anArray = new Card[cards.size()];
+
+            for (int i = 0; i < anArray.length; i++) {
+                anArray[i]=(Card)cards.get(i);
+            }
+
+            int count = 0;
+            for (int i = 0; i < anArray.length; i++) {
+                for (int j = i + 1; j < anArray.length; j++) {
+                    if (anArray[i].getSuit()==(anArray[j].getSuit())) {
+                        count++;
+                    }
+                }
+            }
+        if(count == 10)
+            return true;
+        else
+            return false;
     }
     public boolean isStraight(List<Card> cards){
 
-        return false;
+
+return false ;
     }
     public boolean isThreeOfAKind(List<Card> cards){
 
         return false;
     }
     public boolean isTwoPairs(List<Card> cards){
+        Set<CardValue> uniqueValues = new HashSet<>();
+        Set<CardValue> pairs = new HashSet<>();
 
-        return false;
+        for (Card card : cards) {
+            if (!uniqueValues.add(card.getCardvalue())) {
+                pairs.add(card.getCardvalue());
+            }
+        }
+
+        return pairs.size() == 2;
+
     }
     public boolean isPair(List<Card> cards){
 
-        return false;
-    }
+            Set<CardValue> uniqueValues = new HashSet<>();
+            Set<CardValue> pairs = new HashSet<>();
+
+            for (Card card : cards) {
+                if (!uniqueValues.add(card.getCardvalue())) {
+                     pairs.add(card.getCardvalue());
+                }
+            }
+
+            return pairs.size() == 1;
+
+     }
+
 }
