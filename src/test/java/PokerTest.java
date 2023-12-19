@@ -1,7 +1,4 @@
-import org.example.Card;
-import org.example.CardValue;
-import org.example.PckerHand;
-import org.example.Suit;
+import org.example.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -60,5 +57,65 @@ public class PokerTest {
         }
 
         Assert.assertTrue(areDifferent);
+    }
+
+    @Test
+    public void handIsPair(){
+
+        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.ACE, Suit.H),new Card(CardValue.ACE,Suit.D),new Card(CardValue.THREE,Suit.C),new Card(CardValue.FOUR,Suit.S),new Card(CardValue.FIVE,Suit.D));
+
+        Rules rules = new Rules();
+
+        Assert.assertTrue(rules.isPair(cardlisteOne));
+    }
+
+    @Test
+    public void handIsTwoPair(){
+        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.ACE, Suit.H),new Card(CardValue.ACE,Suit.D),new Card(CardValue.THREE,Suit.C),new Card(CardValue.THREE,Suit.S),new Card(CardValue.FIVE,Suit.D));
+
+        Rules rules = new Rules();
+
+        Assert.assertTrue(rules.isTwoPairs(cardlisteOne));
+    }
+
+    @Test
+    public void handIsThreeOfAKind (){
+        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.TEN, Suit.H),new Card(CardValue.TEN,Suit.D),new Card(CardValue.TEN,Suit.C),new Card(CardValue.THREE,Suit.S),new Card(CardValue.FIVE,Suit.D));
+
+        Rules rules = new Rules();
+
+        Assert.assertTrue(rules.isThreeOfAKind(cardlisteOne));
+    }
+
+    @Test
+    public void handIsFourOfAKind (){
+        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.SEVEN, Suit.H),new Card(CardValue.TEN,Suit.D),new Card(CardValue.TEN,Suit.C),new Card(CardValue.TEN,Suit.S),new Card(CardValue.FIVE,Suit.D));
+
+        Rules rules = new Rules();
+
+        Assert.assertTrue(rules.isFourOfAKind(cardlisteOne));
+    }
+
+    @Test
+    public void handCompare (){
+        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.SEVEN, Suit.H),new Card(CardValue.TEN,Suit.D),new Card(CardValue.TEN,Suit.C),new Card(CardValue.TEN,Suit.S),new Card(CardValue.FIVE,Suit.D));
+
+        Rules rules = new Rules();
+        System.out.println("result "+rules.compareCrads(cardlisteOne)+" count "+rules.getCount());
+        Assert.assertEquals(rules.compareCrads(cardlisteOne),"Four of a kind");
+    }
+
+
+    @Test
+    public void Winner (){
+        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.SEVEN, Suit.H),new Card(CardValue.TEN,Suit.D),new Card(CardValue.TEN,Suit.C),new Card(CardValue.TEN,Suit.S),new Card(CardValue.FIVE,Suit.D));
+        List<Card> cardlisteTow = Arrays.asList(new Card(CardValue.ACE, Suit.H),new Card(CardValue.ACE,Suit.D),new Card(CardValue.THREE,Suit.C),new Card(CardValue.THREE,Suit.S),new Card(CardValue.FIVE,Suit.D));
+
+        PckerHand playerOne = new PckerHand(1, cardlisteOne);
+        PckerHand playerTow = new PckerHand(2, cardlisteTow);
+
+        Rules rules = new Rules();
+        System.out.println(rules.winnerHand(playerOne,playerTow));
+        Assert.assertEquals(String.valueOf(rules.winnerHand(playerOne,playerTow)),"1");
     }
 }
