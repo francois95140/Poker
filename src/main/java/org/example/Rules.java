@@ -1,9 +1,6 @@
 package org.example;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Comparator;
+import java.util.*;
 
 public class Rules {
     public String CompareCrads(List<Card> cards){
@@ -30,17 +27,22 @@ public class Rules {
 
     }
     public boolean isStraightFlush(List<Card> cards) {
-         cards.sort(Comparator.comparingInt(card -> card.getCardvalue().ordinal()));
-
-         for (int i = 0; i < cards.size() - 1; i++) {
-            if (cards.get(i + 1).getCardvalue().ordinal() != cards.get(i).getCardvalue().ordinal() + 1 ||
-                    cards.get(i + 1).getSuit() != cards.get(i).getSuit()) {
+             // Vérifier d'abord si c'est un Flush
+            if (!isFlush(cards)) {
                 return false;
             }
+
+            // Vérifier si les valeurs sont consécutives
+            int minValue = cards.get(0).getCardvalue().ordinal();
+            for (int i = 1; i < cards.size(); i++) {
+                if (cards.get(i).getCardvalue().ordinal() != minValue + i) {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
-        return true;
-    }
     public boolean isFourOfAKind(List<Card> cards){
         int count = 0;
         while (count <=3){
@@ -52,48 +54,50 @@ public class Rules {
         return false;
     }
     public boolean isFullHouse(List<Card> cards) {
-        Map<CardValue, Integer> valueCounts = new HashMap<>();
+      
 
+        // Compter les occurrences de chaque valeur
+        Map<CardValue, Integer> valueCounts = new HashMap<>();
         for (Card card : cards) {
             valueCounts.put(card.getCardvalue(), valueCounts.getOrDefault(card.getCardvalue(), 0) + 1);
         }
 
-        boolean hasThreeOfAKind = false;
-        boolean hasPair = false;
+        // Vérifier si on a trois cartes de même valeur et deux autres formant une paire
+        boolean threeOfAKind = false;
+        boolean pair = false;
 
         for (int count : valueCounts.values()) {
             if (count == 3) {
-                hasThreeOfAKind = true;
+                threeOfAKind = true;
             } else if (count == 2) {
-                hasPair = true;
+                pair = true;
             }
         }
 
-        return hasThreeOfAKind && hasPair;
+        return threeOfAKind && pair;
     }
 
+
     public boolean isFlush(List<Card> cards) {
-        Color firstColor = null;
+            // Récupére le suit de la première carte
+            Suit firstCardSuit = cards.get(0).getSuit();
 
-        for (Card card : cards) {
-            if (firstColor == null || firstColor == card.getColor()) {
-                firstColor = card.getColor();
-            } else {
-
-                return false;
+            // Vérifier si toutes les cartes ont la même suit que la premiere carte
+            for (Card card : cards) {
+                if (card.getSuit() != firstCardSuit) {
+                    return false;
+                }
             }
-        }
 
-        return true;
+            return true;
+
     }
 
     public boolean isStraight(List<Card> cards) {
-
-        cards.sort(Comparator.comparingInt(card -> card.getCardvalue().ordinal()));
-
-
-        for (int i = 0; i < cards.size() - 1; i++) {
-            if (cards.get(i + 1).getCardvalue().ordinal() != cards.get(i).getCardvalue().ordinal() + 1) {
+        // Vérifier si les valeurs sont consécutives
+        int minValue = cards.get(0).getCardvalue().ordinal();
+        for (int i = 1; i < cards.size(); i++) {
+            if (cards.get(i).getCardvalue().ordinal() != minValue + i) {
                 return false;
             }
         }
