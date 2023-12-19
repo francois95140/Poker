@@ -6,24 +6,36 @@ import java.util.Map;
 import java.util.Comparator;
 
 public class Rules {
-    public String CompareCrads(List<Card> cards){
+
+    int count = 0;
+
+    public String compareCrads(List<Card> cards){
         if (isStraightFlush(cards)) {
+            count =
+                    31;
             return "Straight flush";
         } else if (isFourOfAKind(cards)) {
+            count = 2;
             return "Four of a kind";
         } else if (isFullHouse(cards)) {
+            count = 3;
             return "Full house";
         } else if (isFlush(cards)) {
+            count = 4 ;
             return "Flush";
         } else if (isStraight(cards)) {
             return "Straight";
         } else if (isThreeOfAKind(cards)) {
+            count = 6;
             return "Three of a kind";
         } else if (isTwoPairs(cards)) {
+            count = 7;
             return "Two pairs";
         } else if (isPair(cards)) {
+            count = 8;
             return "Pair";
         } else {
+            count = 9;
             return "High card";
         }
 
@@ -41,16 +53,23 @@ public class Rules {
 
         return true;
     }
+
     public boolean isFourOfAKind(List<Card> cards){
-        int count = 0;
-        while (count <=3){
-            if (isPair(cards)){
-                count++;
+        for (int i=0; i < cards.size(); i++) {
+            for (int j = i+1; j < cards.size(); j++){
+                for (int k = j+1; k < cards.size(); k++) {
+                    for (int l = k+1 ; l < cards.size(); l++){
+                        if (cards.get(i).getCardvalue() == cards.get(j).getCardvalue() && cards.get(j).getCardvalue() == cards.get(k).getCardvalue()) {
+                            return true;
+                        }
+                    }
+
+                }
             }
         }
-
         return false;
     }
+
     public boolean isFullHouse(List<Card> cards) {
         Map<CardValue, Integer> valueCounts = new HashMap<>();
 
@@ -97,17 +116,13 @@ public class Rules {
                 return false;
             }
         }
-
         return true;
     }
     public boolean isThreeOfAKind(List<Card> cards){
         for (int i=0; i < cards.size(); i++) {
             for (int j = i+1; j < cards.size(); j++){
                 for (int k = j+1; k < cards.size(); k++) {
-                    if (cards.get(i).getCardvalue() == cards.get(j).getCardvalue()) {
-                        continue;
-                    }
-                    if (cards.get(j).getCardvalue()==cards.get(k).getCardvalue()){
+                    if (cards.get(i).getCardvalue() == cards.get(j).getCardvalue() && cards.get(j).getCardvalue() == cards.get(k).getCardvalue()) {
                         return true;
                     }
                 }
@@ -139,6 +154,21 @@ public class Rules {
             }
         }
         return false;
+    }
+
+    public int winnerHand (PckerHand playerOne , PckerHand playerTwo){
+        compareCrads(playerOne.mycardliste);
+        int indiceOne = count;
+        compareCrads(playerTwo.mycardliste);
+        int indiceTwo = count;
+        if ( indiceOne < indiceTwo){
+            return playerOne.number;
+        }
+        return playerTwo.number;
+    }
+
+    public int getCount() {
+        return count;
     }
 }
 // ça va servir à quoi, qu'est-ce que je veux faire
