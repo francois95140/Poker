@@ -4,6 +4,9 @@ import java.util.*;
 
 public class Rules {
     public String CompareCrads(List<Card> cards){
+        if (cards.size() != 5) {
+            throw new IllegalArgumentException("A poker hand must have exactly 5 cards.");
+        }
         if (isStraightFlush(cards)) {
             return "Straight flush";
         } else if (isFourOfAKind(cards)) {
@@ -25,6 +28,28 @@ public class Rules {
         }
 
 
+    }
+    public String CompareHands(PckerHand blackHand, PckerHand whiteHand) {
+        String blackResult = CompareCrads(blackHand.getMycardliste());
+        String whiteResult = CompareCrads(whiteHand.getMycardliste());
+
+        if (blackResult.equals(whiteResult)) {
+            return "Tie.";
+        } else {
+            return determineWinner(blackResult, whiteResult);
+        }
+    }
+    private String determineWinner(String blackResult, String whiteResult) {
+
+        int resultComparison = blackResult.compareTo(whiteResult);
+
+        if (resultComparison < 0) {
+            return "Black wins. - with " + blackResult;
+        } else if (resultComparison > 0) {
+            return "White wins. - with " + whiteResult;
+        } else {
+            return "Tie. - with " + blackResult;
+        }
     }
     public boolean isStraightFlush(List<Card> cards) {
              // Vérifier d'abord si c'est un Flush
@@ -54,7 +79,7 @@ public class Rules {
         return false;
     }
     public boolean isFullHouse(List<Card> cards) {
-      
+
 
         // Compter les occurrences de chaque valeur
         Map<CardValue, Integer> valueCounts = new HashMap<>();
