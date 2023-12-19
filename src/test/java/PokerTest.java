@@ -1,7 +1,4 @@
-import org.example.Card;
-import org.example.CardValue;
-import org.example.PckerHand;
-import org.example.Suit;
+import org.example.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,8 +8,8 @@ import java.util.List;
 public class PokerTest {
     @Test
     public void cardCount(){
-        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.JACK, Suit.H),new Card(CardValue.ACE,Suit.D),new Card(CardValue.THREE,Suit.C),new Card(CardValue.FOUR,Suit.S),new Card(CardValue.FIVE,Suit.D));
-        List<Card> cardlisteTow = Arrays.asList(new Card(CardValue.JACK, Suit.H),new Card(CardValue.ACE,Suit.D),new Card(CardValue.THREE,Suit.C),new Card(CardValue.FOUR,Suit.S),new Card(CardValue.FIVE,Suit.D));
+        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.JACK, Suit.H, Color.black),new Card(CardValue.ACE,Suit.D, Color.black),new Card(CardValue.THREE,Suit.C, Color.black),new Card(CardValue.FOUR,Suit.S, Color.black),new Card(CardValue.FIVE,Suit.D, Color.black));
+        List<Card> cardlisteTow = Arrays.asList(new Card(CardValue.JACK, Suit.H, Color.red),new Card(CardValue.ACE,Suit.D, Color.red),new Card(CardValue.THREE,Suit.C, Color.red),new Card(CardValue.FOUR,Suit.S, Color.red),new Card(CardValue.FIVE,Suit.D, Color.red));
 
         PckerHand playerOne = new PckerHand(1, cardlisteOne);
         PckerHand playerTow = new PckerHand(2, cardlisteTow);
@@ -23,7 +20,7 @@ public class PokerTest {
 
     @Test
     public void cardIsDifferent(){
-        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.ACE, Suit.H),new Card(CardValue.ACE,Suit.D),new Card(CardValue.THREE,Suit.C),new Card(CardValue.FOUR,Suit.C),new Card(CardValue.FIVE,Suit.D));
+        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.ACE, Suit.H, Color.black),new Card(CardValue.ACE,Suit.D, Color.red),new Card(CardValue.THREE,Suit.C, Color.black),new Card(CardValue.FOUR,Suit.C, Color.red),new Card(CardValue.FIVE,Suit.D, Color.red));
 
         PckerHand playerOne = new PckerHand(1, cardlisteOne);
 
@@ -44,8 +41,8 @@ public class PokerTest {
     @Test
     public void handIsDifferent(){
 
-        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.JACK, Suit.H),new Card(CardValue.ACE,Suit.D),new Card(CardValue.THREE,Suit.C),new Card(CardValue.FOUR,Suit.S),new Card(CardValue.FIVE,Suit.D));
-        List<Card> cardlisteTow = Arrays.asList(new Card(CardValue.JACK, Suit.D),new Card(CardValue.ACE,Suit.H),new Card(CardValue.THREE,Suit.D),new Card(CardValue.FOUR,Suit.C),new Card(CardValue.FIVE,Suit.S));
+        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.JACK, Suit.H, Color.black),new Card(CardValue.ACE,Suit.D, Color.black),new Card(CardValue.THREE,Suit.C, Color.black),new Card(CardValue.FOUR,Suit.S, Color.black),new Card(CardValue.FIVE,Suit.D, Color.black));
+        List<Card> cardlisteTow = Arrays.asList(new Card(CardValue.JACK, Suit.D, Color.red),new Card(CardValue.ACE,Suit.H, Color.red),new Card(CardValue.THREE,Suit.D, Color.red),new Card(CardValue.FOUR,Suit.C, Color.red),new Card(CardValue.FIVE,Suit.S, Color.red));
 
         boolean areDifferent = true;
 

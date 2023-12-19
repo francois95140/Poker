@@ -1,6 +1,9 @@
 package org.example;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Comparator;
 
 public class Rules {
     public String CompareCrads(List<Card> cards){
@@ -26,9 +29,17 @@ public class Rules {
 
 
     }
-    public boolean isStraightFlush(List<Card> cards){
+    public boolean isStraightFlush(List<Card> cards) {
+         cards.sort(Comparator.comparingInt(card -> card.getCardvalue().ordinal()));
 
-        return false;
+         for (int i = 0; i < cards.size() - 1; i++) {
+            if (cards.get(i + 1).getCardvalue().ordinal() != cards.get(i).getCardvalue().ordinal() + 1 ||
+                    cards.get(i + 1).getSuit() != cards.get(i).getSuit()) {
+                return false;
+            }
+        }
+
+        return true;
     }
     public boolean isFourOfAKind(List<Card> cards){
         int count = 0;
@@ -40,17 +51,54 @@ public class Rules {
 
         return false;
     }
-    public boolean isFullHouse(List<Card> cards){
+    public boolean isFullHouse(List<Card> cards) {
+        Map<CardValue, Integer> valueCounts = new HashMap<>();
 
-        return false;
+        for (Card card : cards) {
+            valueCounts.put(card.getCardvalue(), valueCounts.getOrDefault(card.getCardvalue(), 0) + 1);
+        }
+
+        boolean hasThreeOfAKind = false;
+        boolean hasPair = false;
+
+        for (int count : valueCounts.values()) {
+            if (count == 3) {
+                hasThreeOfAKind = true;
+            } else if (count == 2) {
+                hasPair = true;
+            }
+        }
+
+        return hasThreeOfAKind && hasPair;
     }
-    public boolean isFlush(List<Card> cards){
 
-        return false;
+    public boolean isFlush(List<Card> cards) {
+        Color firstColor = null;
+
+        for (Card card : cards) {
+            if (firstColor == null || firstColor == card.getColor()) {
+                firstColor = card.getColor();
+            } else {
+
+                return false;
+            }
+        }
+
+        return true;
     }
-    public boolean isStraight(List<Card> cards){
 
-        return false;
+    public boolean isStraight(List<Card> cards) {
+
+        cards.sort(Comparator.comparingInt(card -> card.getCardvalue().ordinal()));
+
+
+        for (int i = 0; i < cards.size() - 1; i++) {
+            if (cards.get(i + 1).getCardvalue().ordinal() != cards.get(i).getCardvalue().ordinal() + 1) {
+                return false;
+            }
+        }
+
+        return true;
     }
     public boolean isThreeOfAKind(List<Card> cards){
         for (int i=0; i < cards.size(); i++) {
