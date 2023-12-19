@@ -42,7 +42,6 @@ public class Rules {
     private String determineWinner(String blackResult, String whiteResult) {
 
         int resultComparison = blackResult.compareTo(whiteResult);
-
         if (resultComparison < 0) {
             return "Black wins. - with " + blackResult;
         } else if (resultComparison > 0) {
