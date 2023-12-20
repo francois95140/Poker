@@ -24,7 +24,7 @@ public class Rules {
             return "Flush";
         } else if (isStraight(cards)) {
             return "Straight";
-        } else if (isThreeOfAKind(cards)) {
+        } else if (isThreeOfAKind(cards,false)) {
             count = 6;
             return "Three of a kind";
         } else if (isTwoPairs(cards)) {
@@ -89,24 +89,7 @@ public class Rules {
     }
 
     public boolean isFullHouse(List<Card> cards) {
-        Map<CardValue, Integer> valueCounts = new HashMap<>();
-
-        for (Card card : cards) {
-            valueCounts.put(card.getCardvalue(), valueCounts.getOrDefault(card.getCardvalue(), 0) + 1);
-        }
-
-        boolean hasThreeOfAKind = false;
-        boolean hasPair = false;
-
-        for (int count : valueCounts.values()) {
-            if (count == 3) {
-                hasThreeOfAKind = true;
-            } else if (count == 2) {
-                hasPair = true;
-            }
-        }
-
-        return hasThreeOfAKind && hasPair;
+        return isThreeOfAKind(cards,true ) && isPair(cards);
     }
 
     public boolean isFlush(List<Card> cards) {
@@ -141,11 +124,16 @@ public class Rules {
         return min - max == 4;
     }
 
-    public boolean isThreeOfAKind(List<Card> cards) {
+    public boolean isThreeOfAKind(List<Card> cards , boolean delet) {
         for (int i = 0; i < cards.size(); i++) {
             for (int j = i + 1; j < cards.size(); j++) {
                 for (int k = j + 1; k < cards.size(); k++) {
                     if (cards.get(i).getCardvalue() == cards.get(j).getCardvalue() && cards.get(j).getCardvalue() == cards.get(k).getCardvalue()) {
+                        if (delet){
+                            cards.remove(i);
+                            cards.remove(j);
+                            cards.remove(k);
+                        }
                         return true;
                     }
                 }

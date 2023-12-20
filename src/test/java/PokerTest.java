@@ -84,7 +84,7 @@ public class PokerTest {
 
         Rules rules = new Rules();
 
-        Assert.assertTrue(rules.isThreeOfAKind(cardlisteOne));
+        Assert.assertTrue(rules.isThreeOfAKind(cardlisteOne,false));
     }
 
     @Test
@@ -139,6 +139,15 @@ public class PokerTest {
         Rules rules = new Rules();
 
         Assert.assertTrue(rules.isStraightFlush(cardlisteOne));
+    }
+
+    @Test
+    public void handIsFullHouse (){
+        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.THREE, Suit.H),new Card(CardValue.THREE,Suit.H),new Card(CardValue.THREE,Suit.H),new Card(CardValue.SIX,Suit.H),new Card(CardValue.SIX,Suit.H));
+
+        Rules rules = new Rules();
+
+        Assert.assertTrue(rules.isFullHouse(cardlisteOne));
     }
 
     @Test
