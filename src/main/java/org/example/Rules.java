@@ -9,10 +9,9 @@ public class Rules {
 
     int count = 0;
 
-    public String compareCrads(List<Card> cards){
+    public String compareCrads(List<Card> cards) {
         if (isStraightFlush(cards)) {
-            count =
-                    31;
+            count = 1;
             return "Straight flush";
         } else if (isFourOfAKind(cards)) {
             count = 2;
@@ -21,7 +20,7 @@ public class Rules {
             count = 3;
             return "Full house";
         } else if (isFlush(cards)) {
-            count = 4 ;
+            count = 4;
             return "Flush";
         } else if (isStraight(cards)) {
             return "Straight";
@@ -41,24 +40,43 @@ public class Rules {
 
 
     }
-    public boolean isStraightFlush(List<Card> cards) {
-         cards.sort(Comparator.comparingInt(card -> card.getCardvalue().ordinal()));
 
-         for (int i = 0; i < cards.size() - 1; i++) {
-            if (cards.get(i + 1).getCardvalue().ordinal() != cards.get(i).getCardvalue().ordinal() + 1 ||
-                    cards.get(i + 1).getSuit() != cards.get(i).getSuit()) {
-                return false;
+    public Card isHighCard(List<Card> cards) {
+        Card carteMax = cards.get(0);
+
+        for (Card card : cards) {
+
+            if (card.getCardvalue().getValue() < carteMax.getCardvalue().getValue()) {
+                carteMax = card;
             }
         }
 
-        return true;
+        return carteMax;
     }
 
-    public boolean isFourOfAKind(List<Card> cards){
-        for (int i=0; i < cards.size(); i++) {
-            for (int j = i+1; j < cards.size(); j++){
-                for (int k = j+1; k < cards.size(); k++) {
-                    for (int l = k+1 ; l < cards.size(); l++){
+    public Card isMinCard(List<Card> cards) {
+        Card cardMin = cards.get(0);
+
+        for (Card card : cards) {
+
+            if (card.getCardvalue().getValue() > cardMin.getCardvalue().getValue()) {
+                cardMin = card;
+            }
+        }
+
+        return cardMin;
+    }
+
+
+    public boolean isStraightFlush(List<Card> cards) {
+        return isFlush(cards) && isStraight(cards);
+    }
+
+    public boolean isFourOfAKind(List<Card> cards) {
+        for (int i = 0; i < cards.size(); i++) {
+            for (int j = i + 1; j < cards.size(); j++) {
+                for (int k = j + 1; k < cards.size(); k++) {
+                    for (int l = k + 1; l < cards.size(); l++) {
                         if (cards.get(i).getCardvalue() == cards.get(j).getCardvalue() && cards.get(j).getCardvalue() == cards.get(k).getCardvalue()) {
                             return true;
                         }
@@ -92,36 +110,41 @@ public class Rules {
     }
 
     public boolean isFlush(List<Card> cards) {
-        Color firstColor = null;
-
+        int countS = 0;
+        int countC = 0;
+        int countH = 0;
+        int countD = 0;
         for (Card card : cards) {
-            if (firstColor == null || firstColor == card.getColor()) {
-                firstColor = card.getColor();
-            } else {
-
-                return false;
+            if (card.getSuit() == Suit.S) {
+                countS = countS + 1;
+            } else if (card.getSuit() == Suit.C) {
+                countC = countC + 1;
+            } else if (card.getSuit() == Suit.H) {
+                countH = countH + 1;
+            } else if (card.getSuit() == Suit.D) {
+                countD = countD + 1;
             }
         }
-
-        return true;
+        return countC == 5 || countS == 5 || countD == 5 || countH == 5;
     }
 
     public boolean isStraight(List<Card> cards) {
-
-        cards.sort(Comparator.comparingInt(card -> card.getCardvalue().ordinal()));
-
-
-        for (int i = 0; i < cards.size() - 1; i++) {
-            if (cards.get(i + 1).getCardvalue().ordinal() != cards.get(i).getCardvalue().ordinal() + 1) {
-                return false;
+        int min = isMinCard(cards).getCardvalue().getValue();
+        int max = isHighCard(cards).getCardvalue().getValue();
+        for (int i = 0; i < cards.size(); i++) {
+            for (int j = i + 1; j < cards.size(); j++) {
+                if (cards.get(i).getCardvalue().getValue() == cards.get(j).getCardvalue().getValue()) {
+                    return false;
+                }
             }
         }
-        return true;
+        return min - max == 4;
     }
-    public boolean isThreeOfAKind(List<Card> cards){
-        for (int i=0; i < cards.size(); i++) {
-            for (int j = i+1; j < cards.size(); j++){
-                for (int k = j+1; k < cards.size(); k++) {
+
+    public boolean isThreeOfAKind(List<Card> cards) {
+        for (int i = 0; i < cards.size(); i++) {
+            for (int j = i + 1; j < cards.size(); j++) {
+                for (int k = j + 1; k < cards.size(); k++) {
                     if (cards.get(i).getCardvalue() == cards.get(j).getCardvalue() && cards.get(j).getCardvalue() == cards.get(k).getCardvalue()) {
                         return true;
                     }
@@ -131,13 +154,14 @@ public class Rules {
 
         return false;
     }
-    public boolean isTwoPairs(List<Card> cards){
+
+    public boolean isTwoPairs(List<Card> cards) {
         int count = 0;
-        for (int i= 0; i < cards.size(); i ++) {
-            for (int j = i+1; j < cards.size(); j++){
-                if (cards.get(i).getCardvalue()==cards.get(j).getCardvalue()){
-                    count ++;
-                    if (count == 2){
+        for (int i = 0; i < cards.size(); i++) {
+            for (int j = i + 1; j < cards.size(); j++) {
+                if (cards.get(i).getCardvalue() == cards.get(j).getCardvalue()) {
+                    count++;
+                    if (count == 2) {
                         return true;
                     }
                 }
@@ -145,10 +169,11 @@ public class Rules {
         }
         return false;
     }
-    public boolean isPair(List<Card> cards){
-        for ( int i=0; i < cards.size(); i++) {
-            for ( int j=i+1; j < cards.size(); j++) {
-                if (cards.get(i).getCardvalue()==cards.get(j).getCardvalue()){
+
+    public boolean isPair(List<Card> cards) {
+        for (int i = 0; i < cards.size(); i++) {
+            for (int j = i + 1; j < cards.size(); j++) {
+                if (cards.get(i).getCardvalue() == cards.get(j).getCardvalue()) {
                     return true;
                 }
             }
@@ -156,12 +181,12 @@ public class Rules {
         return false;
     }
 
-    public int winnerHand (PckerHand playerOne , PckerHand playerTwo){
+    public int winnerHand(PckerHand playerOne, PckerHand playerTwo) {
         compareCrads(playerOne.mycardliste);
         int indiceOne = count;
         compareCrads(playerTwo.mycardliste);
         int indiceTwo = count;
-        if ( indiceOne < indiceTwo){
+        if (indiceOne < indiceTwo) {
             return playerOne.number;
         }
         return playerTwo.number;

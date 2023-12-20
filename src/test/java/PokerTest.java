@@ -98,13 +98,48 @@ public class PokerTest {
 
     @Test
     public void handCompare (){
-        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.SEVEN, Suit.H),new Card(CardValue.TEN,Suit.D),new Card(CardValue.TEN,Suit.C),new Card(CardValue.TEN,Suit.S),new Card(CardValue.FIVE,Suit.D));
+        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.TEN, Suit.H),new Card(CardValue.TEN,Suit.D),new Card(CardValue.TEN,Suit.C),new Card(CardValue.TEN,Suit.S),new Card(CardValue.FIVE,Suit.D));
 
         Rules rules = new Rules();
         System.out.println("result "+rules.compareCrads(cardlisteOne)+" count "+rules.getCount());
         Assert.assertEquals(rules.compareCrads(cardlisteOne),"Four of a kind");
     }
 
+    @Test
+    public void handIsFlush (){
+        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.SEVEN, Suit.H),new Card(CardValue.TEN,Suit.H),new Card(CardValue.TEN,Suit.H),new Card(CardValue.TEN,Suit.H),new Card(CardValue.FIVE,Suit.H));
+
+        Rules rules = new Rules();
+
+        Assert.assertTrue(rules.isFlush(cardlisteOne));
+    }
+
+    @Test
+    public void handIsHighCard (){
+        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.TWO, Suit.H),new Card(CardValue.THREE,Suit.D),new Card(CardValue.FOUR,Suit.C),new Card(CardValue.FIVE,Suit.H),new Card(CardValue.SIX,Suit.H));
+
+        Rules rules = new Rules();
+
+        Assert.assertEquals(String.valueOf(rules.isHighCard(cardlisteOne).getCardvalue().getValue()),"9");
+    }
+
+    @Test
+    public void handIsStraight (){
+        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.THREE, Suit.H),new Card(CardValue.FOUR,Suit.D),new Card(CardValue.FIVE,Suit.C),new Card(CardValue.SIX,Suit.H),new Card(CardValue.SEVEN,Suit.H));
+
+        Rules rules = new Rules();
+
+        Assert.assertTrue(rules.isStraight(cardlisteOne));
+    }
+
+    @Test
+    public void handIsStraightFlush (){
+        List<Card> cardlisteOne = Arrays.asList(new Card(CardValue.THREE, Suit.H),new Card(CardValue.FOUR,Suit.H),new Card(CardValue.FIVE,Suit.H),new Card(CardValue.SIX,Suit.H),new Card(CardValue.SEVEN,Suit.H));
+
+        Rules rules = new Rules();
+
+        Assert.assertTrue(rules.isStraightFlush(cardlisteOne));
+    }
 
     @Test
     public void Winner (){
